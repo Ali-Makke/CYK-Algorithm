@@ -14,7 +14,7 @@ word = "b a a b a".split()
 wordLen = len(word)
 chart = [[set() for _ in range(wordLen)] for _ in range(wordLen)]
 
-# fills the first raw with the possible non-terminals of the terminals in the given word
+# fills the first row with the possible non-terminals of the terminals in the given word
 i = 0
 for letter in word:
     for key in Rules:
@@ -36,10 +36,13 @@ for level in range(wordLen - 1):
     # iterates through the rows from longest row(first row) to shortest row(last row)
     # moves to the next row for each outer loop(for each level)
     for rowCell in range(wordLen - level - 1):
-        # Gets all relevant combinations of previous relevant cells and update chart
+        # Gets all relevant combinations of previous relevant cells
         for cell in range(level + 1):
-            list1, list2 = chart[cell][rowCell], chart[level - cell][cell + rowCell + 1]
-            isInGrammar(list(product(list1, list2)), level, rowCell)
+            #skips a loop if one of the product cells is empty
+            if not chart[cell][rowCell] or not chart[level - cell][cell + rowCell + 1]:
+                continue
+            list_Product = product(chart[cell][rowCell], chart[level - cell][cell + rowCell + 1])
+            isInGrammar(list_Product, level, rowCell)
 
 #prints true if the word is valid in your grammar
 print(start in chart[wordLen - 1][0], "-> your word is valid for this grammar")
