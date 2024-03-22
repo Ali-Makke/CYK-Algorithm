@@ -24,23 +24,22 @@ for letter in word:
     i += 1
 
 
-def isInGrammar(letterList, l, k1):
+def isInGrammar(letterList, level, rowCell):
     for tupl in letterList:
-        for key0 in Rules:
-            if tupl in Rules[key0]:
-                chart[l + 1][k1].append(key0)
+        for key in Rules:
+            if tupl in Rules[key]:
+                chart[level + 1][rowCell].append(key)
 
 
 # helps the inner loops(traverser the chart all in all)
-level = -1
-for j in range(wordLen, -1, -1):
-    level += 1
+for level in range(wordLen - 1):
     # iterates through the rows from longest row(first row) to shortest row(last row)
-    # moves to the next row for each outer loop(for each j)
-    for k in range(j - 1):
-        for p in range(level + 1):
-            list1, list2 = chart[p][k], chart[level - p][p + k + 1]
-            isInGrammar(list(product(list1, list2)), level, k)
+    # moves to the next row for each outer loop(for each level)
+    for rowCell in range(wordLen - level - 1):
+        # Gets all relevant combinations of previous relevant cells and update chart
+        for cell in range(level + 1):
+            list1, list2 = chart[cell][rowCell], chart[level - cell][cell + rowCell + 1]
+            isInGrammar(list(product(list1, list2)), level, rowCell)
 
 #prints true if the word is valid in your grammar
 print(start in chart[wordLen - 1][0], "-> your word is valid for this grammar")
