@@ -12,7 +12,7 @@ start = "S"
 word = "b a a b a".split()
 
 wordLen = len(word)
-chart = [[list() for _ in range(wordLen)] for _ in range(wordLen)]
+chart = [[set() for _ in range(wordLen)] for _ in range(wordLen)]
 
 # fills the first raw with the possible non-terminals of the terminals in the given word
 i = 0
@@ -20,7 +20,7 @@ for letter in word:
     for key in Rules:
         for value in Rules[key]:
             if letter in value:
-                chart[0][i].append(key)
+                chart[0][i].add(key)
     i += 1
 
 
@@ -28,7 +28,7 @@ def isInGrammar(letterList, level, rowCell):
     for tupl in letterList:
         for key in Rules:
             if tupl in Rules[key]:
-                chart[level + 1][rowCell].append(key)
+                chart[level + 1][rowCell].add(key)
 
 
 # helps the inner loops(traverser the chart all in all)
